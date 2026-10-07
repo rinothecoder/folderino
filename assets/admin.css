@@ -1,0 +1,83 @@
+/* Matches the existing Pencil / Rino plugin admin styling. All rules are scoped. */
+.folderino-wrap{--folderino-accent:#7c3aed;--folderino-hover:#6d28d9;--folderino-ink:#1e1e1e;--folderino-body:#444;--folderino-muted:#666;--folderino-border:#e0e0e0;--folderino-surface:#fff;--folderino-subtle:#f6f6f7;--folderino-danger:#b32d2e;--folderino-success:#246b45;--folderino-radius:8px;--folderino-control-radius:6px;margin:0;color:var(--folderino-body);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;font-size:14px}
+.folderino-wrap *,.folderino-wrap *::before,.folderino-wrap *::after{box-sizing:border-box}
+.folderino-header{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--folderino-surface);border-bottom:1px solid var(--folderino-border);padding:18px 28px;margin-left:-20px}
+.folderino-brand{display:flex;gap:10px;align-items:center;text-decoration:none;color:var(--folderino-ink)}
+.folderino-brand .dashicons{color:var(--folderino-accent);width:24px;height:24px;font-size:24px}
+.folderino-brand h1{font-size:18px;font-weight:600;line-height:1.15;margin:0;padding:0}
+.folderino-header-note{font-size:12px;color:var(--folderino-muted)}
+.folderino-content{max-width:1200px;margin:34px auto;padding:0 28px 20px}
+.folderino-page-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:24px}
+.folderino-page-heading h2{font-size:26px;line-height:1.15;font-weight:600;color:var(--folderino-ink);margin:0 0 8px}
+.folderino-page-heading p{margin:0;color:var(--folderino-muted);font-size:14px}
+.folderino-button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 18px;background:var(--folderino-accent);color:var(--folderino-surface);border:1px solid transparent;border-radius:var(--folderino-control-radius);font-size:13px;line-height:1.5;font-weight:600;text-decoration:none;cursor:pointer;white-space:nowrap}
+.folderino-button:hover{background:var(--folderino-hover);color:var(--folderino-surface)}
+.folderino-button--quiet{background:var(--folderino-surface);color:var(--folderino-ink);border-color:var(--folderino-border)}
+.folderino-button--quiet:hover{background:var(--folderino-subtle);color:var(--folderino-ink)}
+.folderino-button--danger{background:var(--folderino-danger)}
+.folderino-wrap a:focus-visible,.folderino-wrap button:focus-visible,.folderino-wrap input:focus-visible,.folderino-wrap select:focus-visible{outline:2px solid var(--folderino-accent);outline-offset:3px;box-shadow:none}
+.folderino-panel{border:1px solid var(--folderino-border);background:var(--folderino-surface);border-radius:var(--folderino-radius);margin-bottom:24px;overflow:hidden}
+.folderino-empty{text-align:center;padding:46px 24px}
+.folderino-empty>.dashicons{width:36px;height:36px;font-size:36px;color:var(--folderino-accent);margin-bottom:12px}
+.folderino-empty h3{font-size:20px;line-height:1.15;font-weight:600;color:var(--folderino-ink);margin:0 0 10px}
+.folderino-empty p{color:var(--folderino-muted);margin:0 0 22px;line-height:1.6}
+.folderino-table-scroll{overflow-x:auto}
+.folderino-table{width:100%;border-collapse:collapse;text-align:left;font-size:13px}
+.folderino-table th{padding:15px 20px;color:var(--folderino-muted);font-size:12px;font-weight:600;background:var(--folderino-subtle);border-bottom:1px solid var(--folderino-border)}
+.folderino-table td{padding:20px;vertical-align:top;border-bottom:1px solid var(--folderino-border)}
+.folderino-table tr:last-child td{border-bottom:0}
+.folderino-source{display:block;min-width:120px;color:var(--folderino-ink);font-weight:600;font-size:14px;overflow-wrap:anywhere;text-decoration:none;margin-bottom:8px}
+.folderino-source:hover,.folderino-destination a:hover{color:var(--folderino-accent)}
+.folderino-destination{max-width:340px;min-width:190px;overflow-wrap:anywhere;line-height:1.6}
+.folderino-destination a{color:var(--folderino-body);text-decoration:none}
+.folderino-copy{display:inline-flex;align-items:center;gap:5px;padding:0;background:none;border:0;color:var(--folderino-muted);font-size:12px;cursor:pointer;white-space:nowrap}
+.folderino-copy:hover{color:var(--folderino-accent)}
+.folderino-copy .dashicons{width:15px;height:15px;font-size:15px}
+.folderino-type{font-size:13px;font-weight:600;color:var(--folderino-ink)}
+.folderino-meta{display:block;color:var(--folderino-muted);font-size:11px;margin-top:4px}
+.folderino-status{display:inline-block;padding:4px 8px;border-radius:4px;background:var(--folderino-subtle);color:var(--folderino-muted);font-size:12px;white-space:nowrap}
+.folderino-status--on{color:var(--folderino-success)}
+.folderino-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:130px}
+.folderino-actions form{margin:0}
+.folderino-text-action{background:none;border:0;padding:0;color:var(--folderino-accent);text-decoration:none;cursor:pointer;font-size:12px;line-height:1.6;white-space:nowrap}
+.folderino-text-action:hover{text-decoration:underline;color:var(--folderino-hover)}
+.folderino-text-action--danger{color:var(--folderino-danger)}
+.folderino-editor,.folderino-delete{padding:28px 32px;scroll-margin-top:50px}
+.folderino-editor-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}
+.folderino-editor h3,.folderino-delete h3{font-size:18px;font-weight:600;color:var(--folderino-ink);line-height:1.15;margin:0}
+.folderino-delete{border-left:3px solid var(--folderino-danger)}
+.folderino-delete p{line-height:1.6;margin:14px 0 20px;max-width:70ch}
+.folderino-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 32px}
+.folderino-field>label{display:block;color:var(--folderino-ink);font-weight:600;font-size:13px;margin-bottom:8px}
+.folderino-field input[type=text],.folderino-field select{width:100%;max-width:none;min-height:42px;border:1px solid var(--folderino-border);border-radius:var(--folderino-control-radius);background:var(--folderino-surface);color:var(--folderino-ink);padding:8px 12px;font-size:14px;line-height:1.5}
+.folderino-field select{padding-right:30px}
+.folderino-field input[aria-invalid=true]{border-color:var(--folderino-danger)}
+.folderino-help{color:var(--folderino-muted);font-size:12px;line-height:1.6;margin:8px 0 0;max-width:66ch}
+.folderino-preview{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 12px;background:var(--folderino-subtle);border-radius:4px;margin-top:12px;font-size:11px;color:var(--folderino-muted)}
+.folderino-preview>span{overflow-wrap:anywhere;min-width:0}
+.folderino-enabled{padding-top:28px}
+.folderino-enabled input{margin-right:6px;border-color:var(--folderino-border)}
+.folderino-form-actions{display:flex;gap:12px;align-items:center;margin-top:24px;flex-wrap:wrap}
+.folderino-notice{padding:14px 18px;border:1px solid var(--folderino-border);border-left:3px solid var(--folderino-success);border-radius:var(--folderino-control-radius);background:var(--folderino-surface);margin-bottom:20px;font-size:13px;line-height:1.6}
+.folderino-notice--error{border-left-color:var(--folderino-danger)}
+.folderino-field-error{font-size:12px;line-height:1.6;color:var(--folderino-danger);margin:8px 0 0}
+.folderino-footnote{color:var(--folderino-muted);font-size:12px;margin:0}
+.folderino-copy-buffer{position:fixed;left:-9999px;top:0}
+@media(max-width:1100px){.folderino-content{padding:0 18px 20px}.folderino-table th,.folderino-table td{padding:14px}.folderino-actions{gap:8px}}
+@media(max-width:782px){.folderino-header{margin-left:-10px;padding:18px}.folderino-content{margin-top:24px;padding:0 12px 20px}.folderino-header-note{display:none}.folderino-editor,.folderino-delete{padding:22px 20px}.folderino-fields{grid-template-columns:1fr;gap:20px}.folderino-enabled{padding-top:0}.folderino-page-heading h2{font-size:23px}.folderino-page-heading{align-items:flex-start}.folderino-empty{padding:34px 20px}.folderino-preview{flex-wrap:wrap}.folderino-table{min-width:760px}}
+
+.folderino-brand__icon{display:block;width:32px;height:32px;margin-block:-4px;flex-shrink:0}
+
+/* Admin notices: shown below the header, in the gray area. wp-header-end moves them there; hidden until then so nothing jumps. */
+body.media_page_folderino #wpbody-content>div.notice,body.media_page_folderino #wpbody-content>div.updated,body.media_page_folderino #wpbody-content>div.error{display:none}
+.folderino-wrap>div.notice,.folderino-wrap>div.updated,.folderino-wrap>div.error{box-sizing:border-box;max-width:1144px;width:calc(100% - 112px);margin:24px auto 0}
+@media(max-width:782px){.folderino-wrap>div.notice,.folderino-wrap>div.updated,.folderino-wrap>div.error{width:calc(100% - 48px)}}
+
+.folderino-panel{background:var(--folderino-surface);border:1px solid var(--folderino-border);border-radius:var(--folderino-radius);padding:24px;margin-bottom:24px}
+.folderino-panel h2{margin:0 0 8px;font-size:16px;color:var(--folderino-ink)}
+.folderino-panel p{margin:0 0 10px;line-height:1.6}
+.folderino-muted{color:var(--folderino-muted)}
+.folderino-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.folderino-stats strong{display:block;font-size:28px;line-height:1.2;color:var(--folderino-ink)}
+.folderino-stats span{color:var(--folderino-muted)}
+.folderino-brand h1{font-size:18px;font-weight:600;line-height:1.15;margin:0;padding:0;color:var(--folderino-ink)}

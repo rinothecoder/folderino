@@ -1,0 +1,81 @@
+/* Folderino: folder sidebar and media modal filter. */
+/* Layout: sidebar left, the normal Media Library right */
+.folderino-layout{display:flex;gap:20px;align-items:flex-start;margin-right:20px}
+.folderino-main{flex:1 1 auto;min-width:0}
+.folderino-main>.wrap{margin-right:0}
+
+/* Sidebar panel */
+.folderino-sidebar{flex:0 0 250px;width:250px;position:sticky;top:46px;margin-top:10px;max-height:calc(100vh - 66px);overflow:auto;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);font-size:13px}
+.folderino-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-bottom:1px solid #f0f0f1}
+.folderino-head h2{margin:0;font-size:14px;font-weight:600;line-height:1.4}
+.folderino-head .button .dashicons{font-size:16px;width:16px;height:16px;vertical-align:text-bottom}
+.folderino-head-actions{display:flex;gap:4px}
+.folderino-head .folderino-size{padding:0 5px;display:inline-flex;align-items:center;justify-content:center}
+.folderino-size svg{width:14px;height:14px;display:block;transition:transform .2s ease}
+.folderino-sidebar.is-wide .folderino-size svg{transform:rotate(180deg)}
+/* Wide view: toggled with the expand button, remembered per browser */
+.folderino-sidebar{transition:flex-basis .15s ease,width .15s ease}
+.folderino-sidebar.is-wide{flex-basis:320px;width:320px}
+.folderino-msg{margin:0 12px 8px!important}
+.folderino-msg p{margin:.4em 0!important}
+.folderino-hint{margin:0;padding:10px 12px;border-top:1px solid #f0f0f1;color:#646970;font-size:12px}
+
+/* Tree */
+.folderino-tree,.folderino-tree ul{margin:0;padding:0;list-style:none}
+.folderino-tree{padding:4px 0}
+.folderino-tree li{margin:0}
+.folderino-special{border-bottom:1px solid #f0f0f1}
+.folderino-row{display:flex;align-items:center;gap:4px;min-height:32px;padding:0 8px 0 calc(6px + var(--folderino-depth,0) * 16px);cursor:pointer;color:#1d2327;user-select:none}
+.folderino-row:hover{background:#f6f7f7}
+.folderino-row:focus{outline:0;box-shadow:inset 0 0 0 2px #2271b1}
+.folderino-row.is-current{background:#f0f6fc;color:#0a4b78;font-weight:600;box-shadow:inset 3px 0 0 #2271b1}
+.folderino-row.is-editing{cursor:default;background:#f6f7f7}
+.folderino-icon.dashicons{color:#8c8f94;font-size:18px;width:18px;height:18px;flex:0 0 18px}
+.folderino-row.is-current .folderino-icon{color:#2271b1}
+.folderino-name{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.folderino-count{flex:0 0 auto;min-width:18px;text-align:right;color:#646970;font-size:12px;font-weight:400}
+.folderino-toggle{flex:0 0 18px;width:18px;height:18px;padding:0;margin:0;border:0;background:none;color:#646970;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:2px}
+.folderino-toggle:focus{outline:0;box-shadow:0 0 0 2px #2271b1}
+.folderino-toggle .dashicons{font-size:16px;width:16px;height:16px}
+.folderino-toggle.is-empty{visibility:hidden}
+.folderino-actions{display:none;flex:0 0 auto}
+.folderino-row:hover .folderino-actions,.folderino-row:focus-within .folderino-actions{display:inline-flex}
+.folderino-row:hover .folderino-count,.folderino-row:focus-within .folderino-count{display:none}
+.folderino-act{padding:2px;margin:0;border:0;background:none;color:#646970;cursor:pointer;line-height:1;border-radius:2px}
+.folderino-act:hover,.folderino-act:focus{color:#2271b1;background:#fff;outline:0;box-shadow:0 0 0 1px #2271b1}
+.folderino-act[data-act="delete"]:hover,.folderino-act[data-act="delete"]:focus{color:#d63638;box-shadow:0 0 0 1px #d63638}
+.folderino-act .dashicons{font-size:16px;width:16px;height:16px}
+.folderino-input{flex:1 1 auto;min-width:0;min-height:26px!important;height:26px;padding:0 6px!important;font-size:13px!important;line-height:24px!important}
+.folderino-empty{padding:8px 12px;color:#646970;font-style:italic}
+.folderino-confirm{margin:4px 8px 8px;padding:8px 10px;background:#fcf0f1;border-left:3px solid #d63638;font-size:12px}
+.folderino-confirm p{margin:0 0 8px}
+
+/* Drag and drop feedback */
+.folderino-row.is-drop-hover{background:#2271b1;color:#fff}
+.folderino-row.is-drop-hover .folderino-icon,.folderino-row.is-drop-hover .folderino-count{color:#fff}
+.folderino-sidebar.is-dragging-folder .folderino-row.is-drop-hover{background:none;color:inherit}
+.folderino-sidebar.is-dragging-folder .folderino-row.is-drop-hover .folderino-icon{color:#8c8f94}
+.folderino-sidebar.is-dragging-folder .folderino-row.folderino-zone-inside{background:#f0f6fc;box-shadow:inset 0 0 0 2px #2271b1}
+.folderino-sidebar.is-dragging-folder .folderino-row.folderino-zone-before{box-shadow:inset 0 2px 0 #2271b1}
+.folderino-sidebar.is-dragging-folder .folderino-row.folderino-zone-after{box-shadow:inset 0 -2px 0 #2271b1}
+.folderino-drag-helper{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:#2271b1;color:#fff;border-radius:3px;font-size:13px;font-weight:600;box-shadow:0 3px 8px rgba(0,0,0,.2);pointer-events:none;white-space:nowrap}
+.folderino-drag-helper .dashicons{font-size:16px;width:16px;height:16px}
+.folderino-layout li.attachment.ui-draggable-dragging,#the-list tr.ui-draggable-dragging{opacity:.5}
+body.folderino-is-dragging,body.folderino-is-dragging *{cursor:grabbing!important}
+
+
+/* Folder dropdown inside media modals. The modal toolbar is a CSS grid
+   (labels on row 1, selects on row 2), so our label + select join that grid
+   and, when there are three filters, the grid gets three equal columns. */
+.media-toolbar-secondary label[for^="folderino-folder-filter"]{grid-row:1/2}
+.media-toolbar-secondary select.folderino-filter{grid-row:2/3}
+.media-toolbar-secondary:has(> select.attachment-filters:nth-of-type(3)){grid-template-columns:repeat(3,minmax(0,1fr))}
+
+/* Small screens: sidebar above the library */
+@media screen and (max-width:782px){
+	.folderino-layout{flex-direction:column;gap:0;margin-right:10px}
+	.folderino-sidebar,.folderino-sidebar.is-wide{position:static;width:auto;flex-basis:auto;max-height:none;align-self:stretch}
+	.folderino-size{display:none}
+	.folderino-actions{display:inline-flex}
+	.folderino-count{display:none}
+}
