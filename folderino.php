@@ -26,6 +26,8 @@ require_once FOLDERINO_DIR . 'includes/context.php';
 require_once FOLDERINO_DIR . 'includes/class-folderino-migrate.php';
 require_once FOLDERINO_DIR . 'includes/class-folderino-updates.php';
 require_once FOLDERINO_DIR . 'includes/class-folderino-admin.php';
+require_once FOLDERINO_DIR . 'includes/abilities.php';
+Folderino_Abilities::init();
 
 add_action( 'plugins_loaded', 'folderino_boot', 99 );
 
