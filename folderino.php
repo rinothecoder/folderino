@@ -3,7 +3,7 @@
  * Plugin Name: Folderino
  * Plugin URI: https://github.com/rinothecoder/folderino
  * Description: Organise the Media Library into folders. Drag and drop, subfolders, and no file on disk is ever moved.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Rino de Boer
  * Requires at least: 6.4
  * Requires PHP: 7.4
@@ -15,7 +15,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'FOLDERINO_VERSION', '1.0.0' );
+define( 'FOLDERINO_VERSION', '1.0.1' );
 define( 'FOLDERINO_FILE', __FILE__ );
 define( 'FOLDERINO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'FOLDERINO_URL', plugin_dir_url( __FILE__ ) );

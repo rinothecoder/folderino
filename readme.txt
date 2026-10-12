@@ -4,7 +4,7 @@ Tags: media library, folders, media folders, organize, drag and drop
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,6 +28,9 @@ Folders are virtual. A file is only linked to a folder, so no file in wp-content
 2. Open Media > Library. The folder sidebar is on the left.
 
 == Changelog ==
+
+= 1.0.1 =
+* Public GitHub updates require no site token or config changes.
 
 = 1.0.0 =
 * First release.

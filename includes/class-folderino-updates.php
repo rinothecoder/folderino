@@ -1,7 +1,7 @@
 <?php
 if (!defined('ABSPATH')) { exit; }
 
-/** Direct GitHub releases, using the site's connection as Adminino does. */
+/** Published public GitHub releases; no site token is required. */
 final class Folderino_Updates {
     const REPO = 'rinothecoder/folderino';
     const UPDATE_URI = 'https://github.com/rinothecoder/folderino/';
@@ -15,31 +15,19 @@ final class Folderino_Updates {
         add_filter('upgrader_source_selection', [__CLASS__, 'source'], 10, 4);
         add_action('admin_post_folderino_check_updates', [__CLASS__, 'check']);
     }
-    private static function token() {
-        // A dedicated connection can override Adminino's existing site connection.
-        if (defined('FOLDERINO_GITHUB_TOKEN')) { return trim((string) FOLDERINO_GITHUB_TOKEN); }
-        return defined('MK_GITHUB_TOKEN') ? trim((string) MK_GITHUB_TOKEN) : '';
-    }
-    private static function cache_key() {
-        return 'folderino_github_' . substr(hash('sha256', self::token()), 0, 20);
-    }
-    private static function headers() {
-        $h = ['Accept'=>'application/vnd.github+json'];
-        if (self::token() !== '') { $h['Authorization'] = 'Bearer ' . self::token(); }
-        return $h;
-    }
+    private static function cache_key() { return 'folderino_github_public_release'; }
     private static function args() {
         return ['timeout'=>15, 'redirection'=>0, 'limit_response_size'=>262144,
             'user-agent'=>'Folderino Updater/' . FOLDERINO_VERSION,
-            'headers'=>self::headers(), 'cookies'=>[]];
+            'headers'=>['Accept'=>'application/vnd.github+json'], 'cookies'=>[]];
     }
     private static function error($code, $message) { return new WP_Error('folderino_' . $code, $message); }
     private static function json($path) {
         $response = wp_safe_remote_get(self::API . $path, self::args());
-        if (is_wp_error($response)) { return self::error('github_unavailable', 'Could not reach GitHub. Tracking continues normally.'); }
+        if (is_wp_error($response)) { return self::error('github_unavailable', 'Could not reach GitHub. Your folders continue working normally.'); }
         $code = (int) wp_remote_retrieve_response_code($response);
         if ($code === 401 || $code === 404) {
-            return self::error('github_access', 'The site’s GitHub connection cannot read Folderino. Give its token Contents: read access to rinothecoder/folderino.');
+            return self::error('github_access', 'The public Folderino repository is unavailable. Try again later.');
         }
         if ($code !== 200) { return self::error('github_unavailable', 'GitHub could not complete the check. Try again later.'); }
         $data = json_decode(wp_remote_retrieve_body($response), true);
@@ -60,9 +48,9 @@ final class Folderino_Updates {
         if (is_array($cached)) { return $cached['release'] ?? self::error($cached['code'], $cached['error']); }
         $release = self::json('/releases/latest');
         if (is_wp_error($release) && $release->get_error_code() === 'folderino_github_access') {
-            // GitHub uses 404 for both a hidden repo and a repo without releases.
+            // GitHub returns 404 when there are no published releases.
             $repo = self::json('');
-            if (!is_wp_error($repo)) { $release = self::error('github_no_release', 'GitHub is connected. No published release yet.'); }
+            if (!is_wp_error($repo)) { $release = self::error('github_no_release', 'No published Folderino release yet.'); }
         }
         if (!is_wp_error($release)) {
             $tag = $release['tag_name'] ?? '';
@@ -104,7 +92,7 @@ final class Folderino_Updates {
         $updates = get_site_transient('update_plugins');
         return $updates->response[plugin_basename(FOLDERINO_FILE)] ?? null;
     }
-    /** Only this repository's pinned archive may receive the site's credential. */
+    /** Only the published release commit may be downloaded. */
     public static function package_allowed($url, $commit) {
         return is_string($commit) && preg_match('/^[a-f0-9]{40}$/D', $commit) && $url === self::API . '/zipball/' . $commit;
     }
@@ -126,10 +114,10 @@ final class Folderino_Updates {
         if (!version_compare($offered->new_version ?? '0', FOLDERINO_VERSION, '>')) {
             return self::error('package_old', 'This release is not newer than the installed version.');
         }
-        // Resolve a fresh signed archive URL. Never forward Authorization to a redirect.
+        // Resolve the archive without sending site credentials or cookies.
         $response = wp_safe_remote_get($package, self::args());
         if (is_wp_error($response) || (int)wp_remote_retrieve_response_code($response) !== 302) {
-            return self::error('package_unavailable', 'GitHub could not provide the update download. Check the site’s repository access.');
+            return self::error('package_unavailable', 'GitHub could not provide the update download. Try checking for updates again.');
         }
         $url = wp_remote_retrieve_header($response, 'location');
         if (!self::download_url_allowed($url, $offered->folderino_commit)) {
@@ -190,7 +178,7 @@ final class Folderino_Updates {
                 <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>"><input type="hidden" name="action" value="folderino_check_updates"><?php wp_nonce_field('folderino_check_updates'); ?><button class="button">Check for updates</button></form>
                 <?php if ($release && version_compare($release['version'], FOLDERINO_VERSION, '>')): ?><p><a class="button button-primary" href="<?php echo esc_url(admin_url('plugins.php')); ?>">Open Plugins to update</a></p><?php endif; ?>
             <?php endif; ?>
-            <p class="folderino-muted">If the GitHub repository is private, add a read-only token to wp-config.php as FOLDERINO_GITHUB_TOKEN. The token stays on this server and is only sent to GitHub. Update checks send no data about your site.</p>
+            <p class="folderino-muted">This public repository needs no GitHub token or wp-config.php changes. Existing site tokens are not used by Folderino.</p>
         </section>
         <?php
     }

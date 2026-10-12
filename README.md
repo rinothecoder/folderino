@@ -20,7 +20,7 @@ Folderino renames the old `rdb_media_folder` taxonomy to `folderino_folder` once
 
 ## Updates
 
-Releases are published on GitHub. A release is a tag such as `v1.0.1`, higher than the `Version` header. If the repository is private, add `define( 'FOLDERINO_GITHUB_TOKEN', '...' );` to `wp-config.php` with a read-only token.
+Releases are published on GitHub. A release is a tag such as `v1.0.1`, higher than the `Version` header. The repository is public: no GitHub token, Adminino connection, or wp-config.php change is needed. Existing site tokens are ignored by Folderino.
 
 ## License
 
