@@ -129,8 +129,7 @@ final class Folderino_Updates {
         $response = wp_safe_remote_get($url, ['timeout'=>60, 'redirection'=>0, 'stream'=>true, 'filename'=>$file,
             'limit_response_size'=>self::MAX_PACKAGE_BYTES, 'user-agent'=>'Folderino Updater/' . FOLDERINO_VERSION,
             'cookies'=>[], 'headers'=>[]]);
-        $handle = fopen($file, 'rb'); $signature = $handle ? fread($handle, 4) : '';
-        if ($handle) { fclose($handle); }
+        $signature = (string) file_get_contents($file, false, null, 0, 4);
         if (is_wp_error($response) || (int)wp_remote_retrieve_response_code($response) !== 200
             || $signature !== "PK\x03\x04" || filesize($file) >= self::MAX_PACKAGE_BYTES) {
             wp_delete_file($file);
@@ -162,24 +161,18 @@ final class Folderino_Updates {
         if (!current_user_can('update_plugins')) { wp_die('You cannot check plugin updates.'); }
         check_admin_referer('folderino_check_updates');
         self::release(true); wp_clean_plugins_cache(); wp_update_plugins();
-        wp_safe_redirect(admin_url('upload.php?page=folderino#folderino-updates')); exit;
+        wp_safe_redirect(admin_url('plugins.php?folderino_checked=1')); exit;
     }
-    public static function screen() {
-        $cached = get_site_transient(self::cache_key());
-        $release = is_array($cached) ? ($cached['release'] ?? null) : null;
-        $message = ($release ? (version_compare($release['version'], FOLDERINO_VERSION, '>') ? 'Version ' . $release['version'] . ' is available.' : 'You have the latest published version.')
-                : ($cached['error'] ?? 'Ready to check GitHub for published releases.'));
-        ?>
-        <section id="folderino-updates" class="folderino-panel"><h2>Plugin updates</h2>
-            <p>Installed version: <strong><?php echo esc_html(FOLDERINO_VERSION); ?></strong></p>
-            <p role="status"><?php echo esc_html($message); ?></p>
-            <p class="folderino-muted">Updates come directly from GitHub releases. Updates keep all your folders. Automatic updates follow your WordPress choice.</p>
-            <?php if (current_user_can('update_plugins')): ?>
-                <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>"><input type="hidden" name="action" value="folderino_check_updates"><?php wp_nonce_field('folderino_check_updates'); ?><button class="button">Check for updates</button></form>
-                <?php if ($release && version_compare($release['version'], FOLDERINO_VERSION, '>')): ?><p><a class="button button-primary" href="<?php echo esc_url(admin_url('plugins.php')); ?>">Open Plugins to update</a></p><?php endif; ?>
-            <?php endif; ?>
-            <p class="folderino-muted">This public repository needs no GitHub token or wp-config.php changes. Existing site tokens are not used by Folderino.</p>
-        </section>
-        <?php
+    public static function status() {
+        $cached  = get_site_transient( self::cache_key() );
+        $release = is_array( $cached ) ? ( $cached['release'] ?? null ) : null;
+        if ( $release ) {
+            if ( version_compare( $release['version'], FOLDERINO_VERSION, '>' ) ) {
+                return array( 'type' => 'info', 'message' => 'Version ' . $release['version'] . ' is available. Update it from the plugin list.' );
+            }
+            return array( 'type' => 'success', 'message' => 'You have the latest version.' );
+        }
+        $error = ( is_array( $cached ) && ! empty( $cached['error'] ) && is_string( $cached['error'] ) ) ? $cached['error'] : 'Could not check for updates. Please try again.';
+        return array( 'type' => 'warning', 'message' => $error );
     }
 }

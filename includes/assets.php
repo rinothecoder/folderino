@@ -70,20 +70,31 @@ function folderino_enqueue_assets() {
 			'del'           => __( 'Delete', 'folderino' ),
 			'cancel'        => __( 'Cancel', 'folderino' ),
 			'folderName'    => __( 'Folder name', 'folderino' ),
+			/* translators: %s: folder name */
 			'deleteConfirm' => __( 'Delete the folder "%s"? Its files stay in the Media Library and become Uncategorized. Subfolders move up one level.', 'folderino' ),
 			'empty'         => __( 'No folders yet.', 'folderino' ),
-			'hint'          => __( 'Drag files onto a folder to move them. Drag folders to reorder or nest them.', 'folderino' ),
+			'hint'          => __( 'Manage your media easily with Folderino by dragging files into folders and moving them or nesting them.', 'folderino' ),
 			'moveOne'       => __( 'Move 1 file', 'folderino' ),
+			/* translators: %d: number of files */
 			'moveMany'      => __( 'Move %d files', 'folderino' ),
 			'error'         => __( 'Something went wrong. Please try again.', 'folderino' ),
 			'allFolders'    => __( 'All folders', 'folderino' ),
 			'filterLabel'   => __( 'Filter by folder', 'folderino' ),
 			'toggle'        => __( 'Show or hide subfolders', 'folderino' ),
+			/* translators: %s: folder name */
+			'showSub'       => __( 'Show subfolders of %s', 'folderino' ),
+			/* translators: %s: folder name */
+			'hideSub'       => __( 'Hide subfolders of %s', 'folderino' ),
+			'keepFolder'    => __( 'Keep folder', 'folderino' ),
+			'deleteFolder'  => __( 'Delete folder', 'folderino' ),
 			'widen'         => __( 'Make the folder panel wider', 'folderino' ),
 			'narrow'        => __( 'Make the folder panel narrower', 'folderino' ),
+			/* translators: %s: folder name */
 			'uploadingTo'   => __( 'Uploading to "%s"...', 'folderino' ),
 			'uploadedOne'   => __( '1 file uploaded', 'folderino' ),
+			/* translators: %d: number of files */
 			'uploadedMany'  => __( '%d files uploaded', 'folderino' ),
+			/* translators: %s: folder name */
 			'uploadedTo'    => __( ' to "%s".', 'folderino' ),
 		),
 	);

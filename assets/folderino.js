@@ -216,6 +216,23 @@
 		});
 	}
 
+	// Icons (Lucide, ISC licence). All the same size, set once in the CSS (--folderino-icon).
+	var ICONS = {
+		folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+		folderOpen: '<path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/>',
+		folders: '<path d="M20 17a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3.9a2 2 0 0 1-1.69-.9l-.81-1.2a2 2 0 0 0-1.67-.9H8a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2Z"/><path d="M2 8v11a2 2 0 0 0 2 2h14"/>',
+		folderPlus: '<path d="M12 10v6M9 13h6"/><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
+		all: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="1.5"/><path d="m21 15-4-4L5 21"/>',
+		none: '<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+		expand: '<path d="M3 5v14"/><path d="M21 12H7"/><path d="m15 18 6-6-6-6"/>',
+		plus: '<path d="M12 5v14M5 12h14"/>',
+		edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+		trash: '<path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/>'
+	};
+	function icon(name) {
+		return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' + ICONS[name] + '</svg>';
+	}
+
 	// Wrap the normal page (.wrap) in a flex layout with our sidebar on the left.
 	function mountSidebar() {
 		var $wrap = $('#wpbody-content > .wrap').first();
@@ -227,12 +244,10 @@
 			$('<div class="folderino-head-actions">').append(
 				// Expand / collapse: switches the panel between 250px and 320px.
 				// Icon: "arrow-right-from-line" (Lucide, ISC licence). It turns around when the panel is wide.
-				$('<button type="button" class="button button-small folderino-size">').html(
-					'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
-					'<path d="M3 5v14"/><path d="M21 12H7"/><path d="m15 18 6-6-6-6"/></svg>'
-				),
-				$('<button type="button" class="button button-small folderino-new">')
-					.append('<span class="dashicons dashicons-plus-alt2" aria-hidden="true"></span> ', document.createTextNode(i18n.newFolder))
+				$('<button type="button" class="folderino-iconbtn folderino-size">').html(icon('expand')),
+				$('<button type="button" class="folderino-iconbtn folderino-iconbtn--accent folderino-new">')
+					.attr({ 'aria-label': i18n.newFolder, title: i18n.newFolder })
+					.html(icon('folderPlus'))
 			)
 		);
 		var $msg = $('<div class="folderino-msg notice inline" hidden><p></p></div>');
@@ -265,46 +280,46 @@
 		return $('#folderino-sidebar .folderino-row[data-id="' + id + '"]');
 	}
 
-	// One row: [toggle] [icon] name count [actions]
-	function makeRow(type, id, name, count, depth, icon) {
+	// One row: [icon] name count [actions]. A folder with subfolders uses its icon as the toggle.
+	function makeRow(type, id, name, count, depth, iconName) {
 		var $row = $('<div class="folderino-row" tabindex="0">')
 			.attr({ 'data-type': type, 'data-id': id, 'data-depth': depth })
 			.css('--folderino-depth', depth);
-		var $toggle = $('<button type="button" class="folderino-toggle">');
 		var kids = type === 'folder' ? childrenOf(id) : [];
+		var $icon;
 		if (kids.length) {
 			var open = !state.collapsed[id];
-			$toggle.attr({ 'aria-expanded': open ? 'true' : 'false', 'aria-label': i18n.toggle })
-				.append('<span class="dashicons ' + (open ? 'dashicons-arrow-down-alt2' : 'dashicons-arrow-right-alt2') + '" aria-hidden="true"></span>');
+			var label = (open ? i18n.hideSub : i18n.showSub).replace('%s', name);
+			$icon = $('<button type="button" class="folderino-toggle folderino-icon">')
+				.attr({ 'aria-expanded': open ? 'true' : 'false', 'aria-label': label, title: label })
+				.html(icon(open ? 'folderOpen' : 'folders'));
 		} else {
-			$toggle.addClass('is-empty').attr({ tabindex: -1, 'aria-hidden': 'true' });
+			$icon = $('<span class="folderino-icon" aria-hidden="true">').html(icon(iconName));
 		}
 		$row.append(
-			$toggle,
-			'<span class="dashicons ' + icon + ' folderino-icon" aria-hidden="true"></span>',
+			$icon,
 			$('<span class="folderino-name">').text(name),
 			$('<span class="folderino-count">').text(count)
 		);
 		if (type === 'folder') {
 			$row.append($('<span class="folderino-actions">').append(
-				actionButton('add', 'dashicons-plus-alt2', i18n.addSub, name),
-				actionButton('rename', 'dashicons-edit', i18n.rename, name),
-				actionButton('delete', 'dashicons-trash', i18n.del, name)
+				actionButton('add', 'plus', i18n.addSub, name),
+				actionButton('rename', 'edit', i18n.rename, name),
+				actionButton('delete', 'trash', i18n.del, name)
 			));
 		}
 		return $row;
 	}
 
-	function actionButton(act, icon, label, name) {
+	function actionButton(act, iconName, label, name) {
 		return $('<button type="button" class="folderino-act">')
 			.attr({ 'data-act': act, 'aria-label': label + ': ' + name, title: label })
-			.append('<span class="dashicons ' + icon + '" aria-hidden="true"></span>');
+			.html(icon(iconName));
 	}
-
 	// Build the nested list of folders under a parent.
 	function buildLevel(parentId, $ul, depth) {
 		_.each(childrenOf(parentId), function (f) {
-			var $li = $('<li>').attr('data-id', f.id).append(makeRow('folder', f.id, f.name, f.count, depth, 'dashicons-category'));
+			var $li = $('<li>').attr('data-id', f.id).append(makeRow('folder', f.id, f.name, f.count, depth, 'folder'));
 			if (childrenOf(f.id).length) {
 				var $sub = $('<ul class="folderino-children">');
 				if (state.collapsed[f.id]) { $sub.prop('hidden', true); }
@@ -319,8 +334,8 @@
 		var $side = $('#folderino-sidebar');
 		if (!$side.length) { return; }
 		$side.find('.folderino-special').empty().append(
-			$('<li>').append(makeRow('all', 'all', i18n.all, TREE.total, 0, 'dashicons-admin-media')),
-			$('<li>').append(makeRow('none', 'none', i18n.none, TREE.none, 0, 'dashicons-portfolio'))
+			$('<li>').append(makeRow('all', 'all', i18n.all, TREE.total, 0, 'all')),
+			$('<li>').append(makeRow('none', 'none', i18n.none, TREE.none, 0, 'none'))
 		);
 		var $folders = $side.find('.folderino-folders').empty();
 		buildLevel(0, $folders, 0);
@@ -494,8 +509,7 @@
 		var $input = nameInput('');
 		$('<li class="folderino-new-item">').append(
 			$('<div class="folderino-row is-editing">').css('--folderino-depth', depth).append(
-				'<span class="folderino-toggle is-empty" aria-hidden="true"></span>',
-				'<span class="dashicons dashicons-category folderino-icon" aria-hidden="true"></span>',
+				$('<span class="folderino-icon" aria-hidden="true">').html(icon('folder')),
 				$input
 			)
 		).appendTo($list);
@@ -528,13 +542,13 @@
 		if (!f) { return; }
 		$('#folderino-sidebar .folderino-confirm').remove();
 
-		var $yes = $('<button type="button" class="button button-small button-link-delete">').text(i18n.del);
-		var $no = $('<button type="button" class="button button-small">').text(i18n.cancel);
+		var $yes = $('<button type="button" class="folderino-btn folderino-btn--danger">').text(i18n.deleteFolder);
+		var $no = $('<button type="button" class="folderino-btn folderino-btn--quiet">').text(i18n.keepFolder);
 		var $box = $('<div class="folderino-confirm" role="alert">').append(
-			$('<p>').text(i18n.deleteConfirm.replace('%s', f.name)), $yes, ' ', $no
+			$('<p>').text(i18n.deleteConfirm.replace('%s', f.name)), $('<div class="folderino-confirm-actions">').append($no, $yes)
 		);
 		rowFor(id).after($box);
-		$yes.trigger('focus');
+		$no.trigger('focus');
 
 		$no.on('click', function () {
 			$box.remove();

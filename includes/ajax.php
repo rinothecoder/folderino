@@ -61,7 +61,7 @@ function folderino_ajax_tree() {
 function folderino_ajax_create() {
 	folderino_ajax_guard();
 	// phpcs:disable WordPress.Security.NonceVerification.Missing -- checked in folderino_ajax_guard().
-	$name   = folderino_clean_name( isset( $_POST['name'] ) ? $_POST['name'] : '' );
+	$name   = folderino_clean_name( isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '' );
 	$parent = isset( $_POST['parent'] ) ? absint( $_POST['parent'] ) : 0;
 	// phpcs:enable
 
@@ -90,7 +90,7 @@ function folderino_ajax_rename() {
 	folderino_ajax_guard();
 	// phpcs:disable WordPress.Security.NonceVerification.Missing
 	$folder = folderino_get_folder( isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0 );
-	$name   = folderino_clean_name( isset( $_POST['name'] ) ? $_POST['name'] : '' );
+	$name   = folderino_clean_name( isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '' );
 	// phpcs:enable
 
 	if ( ! $folder ) {

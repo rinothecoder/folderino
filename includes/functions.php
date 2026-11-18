@@ -168,11 +168,13 @@ function folderino_get_tree() {
 	);
 
 	// All files = every attachment the Media Library can show.
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- counts only, cached by the caller.
 	$total = (int) $wpdb->get_var(
 		"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'attachment' AND post_status IN ('inherit','private')"
 	);
 
 	// Uncategorized = attachments without any folder.
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- counts only, cached by the caller.
 	$none = (int) $wpdb->get_var(
 		$wpdb->prepare(
 			"SELECT COUNT(*) FROM {$wpdb->posts} p

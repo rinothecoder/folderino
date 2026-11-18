@@ -46,11 +46,11 @@ add_filter( 'ajax_query_attachments_args', 'folderino_filter_grid_query' );
  */
 function folderino_filter_grid_query( $args ) {
 	// phpcs:ignore WordPress.Security.NonceVerification -- read-only filter; core already checked upload_files.
-	$query = ( isset( $_REQUEST['query'] ) && is_array( $_REQUEST['query'] ) ) ? wp_unslash( $_REQUEST['query'] ) : array();
-	if ( empty( $query['folderino_folder'] ) || ! is_scalar( $query['folderino_folder'] ) ) {
+	$folder = ( isset( $_REQUEST['query']['folderino_folder'] ) && is_scalar( $_REQUEST['query']['folderino_folder'] ) ) ? sanitize_key( wp_unslash( $_REQUEST['query']['folderino_folder'] ) ) : '';
+	if ( '' === $folder ) {
 		return $args;
 	}
-	$tax_query = folderino_tax_query( sanitize_key( $query['folderino_folder'] ) );
+	$tax_query = folderino_tax_query( $folder );
 	if ( $tax_query ) {
 		$existing          = ( isset( $args['tax_query'] ) && is_array( $args['tax_query'] ) ) ? $args['tax_query'] : array();
 		$args['tax_query'] = array_merge( $existing, $tax_query ); // phpcs:ignore WordPress.DB.SlowDBQuery

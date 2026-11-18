@@ -25,8 +25,11 @@ final class Folderino_Migrate {
 		}
 		global $wpdb;
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery -- one-time migration of our own taxonomy.
 		$old = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->term_taxonomy} WHERE taxonomy = %s", self::OLD_TAX ) );
 		$new = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->term_taxonomy} WHERE taxonomy = %s", FOLDERINO_TAX ) );
+
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery
 
 		// Folders already exist on both sides: never merge by guessing. Leave everything as it is.
 		if ( $old && $new ) {
@@ -36,7 +39,7 @@ final class Folderino_Migrate {
 
 		if ( $old ) {
 			$wpdb->update( $wpdb->term_taxonomy, array( 'taxonomy' => FOLDERINO_TAX ), array( 'taxonomy' => self::OLD_TAX ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-			$wpdb->update( $wpdb->termmeta, array( 'meta_key' => 'folderino_order' ), array( 'meta_key' => self::OLD_META ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$wpdb->update( $wpdb->termmeta, array( 'meta_key' => 'folderino_order' ), array( 'meta_key' => self::OLD_META ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 			wp_cache_flush();
 		}
 
