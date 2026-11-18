@@ -138,8 +138,15 @@ final class Folderino_Updates {
         return $file;
     }
     public static function source($source, $remote, $upgrader, $extra) {
-        if (!self::own_update($extra) || is_wp_error($source)) { return $source; }
+        if (is_wp_error($source)) { return $source; }
         global $wp_filesystem;
+        // GitHub names the unpacked folder owner-repo-hash. Even if WordPress did not tell us which plugin this is, that name is ours.
+        if (!self::own_update($extra)) {
+            if (!preg_match('/^rinothecoder-folderino-[a-f0-9]{7,40}$/', basename(untrailingslashit($source)))
+                || !preg_match('/^\s*\* Plugin Name:\s*Folderino\s*$/m', (string) $wp_filesystem->get_contents(trailingslashit($source) . 'folderino.php'))) { return $source; }
+            $target = trailingslashit(dirname(untrailingslashit($source))) . 'folderino/';
+            return $wp_filesystem->move($source, $target, true) ? $target : self::error('package_folder', 'Could not prepare the Folderino update folder.');
+        }
         $offered = self::offered();
         $header = $wp_filesystem->get_contents(trailingslashit($source) . 'folderino.php');
         $core = $header;
