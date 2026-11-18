@@ -2,8 +2,8 @@
 
 /* Colours: the hue comes from the WordPress profile colour, saturation and lightness are set here.
    Browsers without relative colours fall back to the profile colour itself (purple if there is none). */
-.folderino-sidebar,.folderino-drag-helper{--folderino-s:83%;--folderino-l:58%;--folderino-icon:16px;--folderino-accent:var(--wp-admin-theme-color,#7c3aed);--folderino-accent-hover:color-mix(in srgb,var(--folderino-accent) 85%,#000);--folderino-ink:#1e1e1e;--folderino-muted:#666;--folderino-border:#e0e0e0;--folderino-subtle:#f6f6f7;--folderino-danger:#b32d2e}
-@supports (color:hsl(from red h s l)){.folderino-sidebar,.folderino-drag-helper{--folderino-accent:hsl(from var(--wp-admin-theme-color,#7c3aed) h var(--folderino-s) var(--folderino-l));--folderino-accent-hover:hsl(from var(--folderino-accent) h s calc(l - 8))}}
+.folderino-sidebar,.folderino-drag-helper{--folderino-s:83%;--folderino-l:58%;--folderino-text-l:32%;--folderino-icon:16px;--folderino-accent:var(--wp-admin-theme-color,#7c3aed);--folderino-accent-hover:color-mix(in srgb,var(--folderino-accent) 85%,#000);--folderino-accent-text:color-mix(in srgb,var(--folderino-accent) 55%,#000);--folderino-ink:#1e1e1e;--folderino-muted:#666;--folderino-border:#e0e0e0;--folderino-subtle:#f6f6f7;--folderino-danger:#b32d2e}
+@supports (color:hsl(from red h s l)){.folderino-sidebar,.folderino-drag-helper{--folderino-accent:hsl(from var(--wp-admin-theme-color,#7c3aed) h var(--folderino-s) var(--folderino-l));--folderino-accent-hover:hsl(from var(--folderino-accent) h s calc(l - 8));--folderino-accent-text:hsl(from var(--wp-admin-theme-color,#7c3aed) h var(--folderino-s) var(--folderino-text-l))}}
 
 /* Layout: sidebar left, the normal Media Library right */
 .folderino-layout{display:flex;gap:20px;align-items:flex-start;margin-right:20px}
@@ -11,7 +11,7 @@
 .folderino-main>.wrap{margin-right:0}
 
 /* Sidebar panel. Wide view: toggled with the expand button, remembered per browser */
-.folderino-sidebar{flex:0 0 280px;width:280px;box-sizing:border-box;position:sticky;top:46px;margin-top:10px;max-height:calc(100vh - 66px);overflow:auto;background:#fff;border:1px solid var(--folderino-border);border-radius:8px;color:var(--folderino-ink);font-size:14px;transition:flex-basis .15s ease,width .15s ease}
+.folderino-sidebar{flex:0 0 280px;width:280px;box-sizing:border-box;position:sticky;top:46px;margin-top:10px;max-height:calc(100vh - 66px);overflow:auto;scrollbar-width:none;background:#fff;border:1px solid var(--folderino-border);border-radius:8px;color:var(--folderino-ink);font-size:14px;transition:flex-basis .15s ease,width .15s ease}
 .folderino-sidebar.is-wide{flex-basis:320px;width:320px}
 .folderino-sidebar svg{display:block;flex:none;width:var(--folderino-icon);height:var(--folderino-icon);fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
 .folderino-sidebar :focus-visible{outline:2px solid var(--folderino-accent);outline-offset:2px}
@@ -22,8 +22,8 @@
 .folderino-head-actions{display:flex;gap:8px}
 .folderino-iconbtn{display:grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid var(--folderino-border);border-radius:6px;background:#fff;color:var(--folderino-muted);cursor:pointer}
 .folderino-iconbtn:hover{background:var(--folderino-subtle);color:var(--folderino-ink)}
-.folderino-iconbtn--accent{border-color:var(--folderino-accent);color:var(--folderino-accent)}
-.folderino-iconbtn--accent:hover{background:color-mix(in srgb,var(--folderino-accent) 10%,transparent);color:var(--folderino-accent)}
+.folderino-iconbtn--accent{border-color:var(--folderino-accent);color:var(--folderino-accent-text)}
+.folderino-iconbtn--accent:hover{background:color-mix(in srgb,var(--folderino-accent) 10%,transparent);color:var(--folderino-accent-text)}
 .folderino-size svg{transition:transform .2s ease}
 .folderino-sidebar.is-wide .folderino-size svg{transform:rotate(180deg)}
 .folderino-msg{margin:0 12px 8px!important}
@@ -38,12 +38,13 @@
 .folderino-row{display:flex;align-items:center;gap:8px;min-height:36px;margin:1px 8px;padding:0 4px 0 calc(8px + var(--folderino-depth,0) * 16px);border-radius:6px;color:var(--folderino-ink);cursor:pointer;user-select:none}
 .folderino-row:hover{background:var(--folderino-subtle)}
 .folderino-row:focus-visible{outline-offset:-2px}
-.folderino-row.is-current{background:color-mix(in srgb,var(--folderino-accent) 10%,transparent);color:var(--folderino-accent);font-weight:600}
+.folderino-row.is-current{background:color-mix(in srgb,var(--folderino-accent) 10%,transparent);color:var(--folderino-accent-text);font-weight:600}
 .folderino-row.is-editing{cursor:default;background:var(--folderino-subtle)}
 .folderino-icon{display:grid;place-items:center;flex:none;width:24px;height:24px;margin:0 -4px;color:var(--folderino-muted)}
-.folderino-row.is-current .folderino-icon{color:var(--folderino-accent)}
+.folderino-row.is-current .folderino-icon{color:var(--folderino-accent-text)}
 button.folderino-icon{padding:0;border:0;border-radius:4px;background:none;cursor:pointer}
-button.folderino-icon:hover{background:color-mix(in srgb,var(--folderino-accent) 14%,transparent);color:var(--folderino-accent)}
+button.folderino-icon:hover{background:color-mix(in srgb,var(--folderino-accent) 14%,transparent);color:var(--folderino-accent-text)}
+.folderino-sidebar::-webkit-scrollbar{display:none}
 .folderino-name{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .folderino-count{flex:0 0 auto;min-width:24px;text-align:right;color:var(--folderino-muted);font-size:13px;font-weight:400}
 .folderino-actions{display:none;flex:0 0 auto;gap:2px}
